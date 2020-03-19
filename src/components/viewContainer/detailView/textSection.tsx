@@ -1,6 +1,7 @@
 import React, { CSSProperties, Component } from 'react';
 import Axios, { AxiosResponse } from 'axios';
 import Spinner from '../../spinner';
+import { ThemeContext, ThemePalette } from '../../../contexts/themeContext';
 
 interface Props {
     view: string
@@ -71,12 +72,21 @@ export default class TextSection extends Component<Props, State> {
     render() {
         const { isLoading, paragraphs } = this.state
         return (
-            <div style={root}>
-                {isLoading ? <Spinner/> : null}
-                {paragraphs.map((paragraph) =>
-                    <p key={paragraph.substr(0, 10)} style={text}>{paragraph}</p>
+            <ThemeContext.Consumer>
+                {({ theme }) => (
+                    <div style={root}>
+                        {isLoading ? <Spinner/> : null}
+                        {paragraphs.map((paragraph) =>
+                            <p
+                                 key={paragraph.substr(0, 10)} 
+                                 style={text(theme)}
+                                 >   
+                                {paragraph}
+                            </p>
+                        )}
+                    </div>
                 )}
-            </div>
+            </ThemeContext.Consumer>
         )
     }
 }
@@ -88,10 +98,12 @@ const root: CSSProperties = {
     minHeight: '15em'
 }
 
-const text: CSSProperties = {
-    display: 'block',
-    lineHeight: '1.5',
-    fontSize: '1.1em',
-    color: 'white',
-    textShadow: '1px 1px 2px black'
-}
+const text = ( theme: ThemePalette): CSSProperties => ({
+        display: 'block',
+        lineHeight: '1.5',
+        fontSize: '1.1em',
+        color: theme.foreground.primary,
+        textShadow: `1px 1px 2px ${theme.background.primary}`,
+});
+    
+

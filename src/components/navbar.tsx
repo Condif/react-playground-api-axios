@@ -1,6 +1,8 @@
 import React, { CSSProperties } from 'react';
 import { Link } from 'react-router-dom';
 import { ThemeContext, ThemePalette } from '../contexts/themeContext';
+import Button from './button';
+import ThemeToggleButton from './themeToggleButton';
 
 
 /** React function component */
@@ -8,12 +10,10 @@ export default function Navbar() {
 
     return (
         <ThemeContext.Consumer>
-        {({theme, toggleTheme}) => (
+        {({theme}) => (
             <div style={navbar(theme)}>
                 <Link to="/" style={navbarItem(theme)}>React Playground</Link>
-                <button onClick={toggleTheme}>
-                    Toggle
-                </button>
+                <ThemeToggleButton/>
             </div>
         )}
         </ThemeContext.Consumer>
@@ -25,9 +25,10 @@ const navbar = (theme: ThemePalette): CSSProperties  => ({
     minHeight: '4em',
     background: theme.background.primary,
     display: 'flex',
-    alignItems: 'stretch',
+    alignItems: 'center',
     justifyContent: 'space-between',
     padding: '0 1em',
+    boxShadow: `0 -10px 30px black`
 
 });
 
@@ -39,5 +40,5 @@ const navbarItem = (theme: ThemePalette): CSSProperties => ({
     alignItems: 'center',
     cursor: 'pointer',
     textDecoration: 'none',
-    color: '#E1E1E1',
+    color: theme.foreground.primary,
 });

@@ -1,4 +1,5 @@
 import React, { CSSProperties } from 'react';
+import Button from '../../button';
 
 interface Props {
     view: string
@@ -9,7 +10,7 @@ export default function HeaderSection(props: Props) {
     return (
         <div style={headerSegment}>
             <h2 style={header}>{props.view.toUpperCase()}</h2>
-            <button onClick={props.openModal}>Open Modal</button>
+            <Button onClick={props.openModal}>Open Modal</Button>
         </div>
     )
 }

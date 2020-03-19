@@ -2,6 +2,7 @@ import React, { Component, CSSProperties } from 'react';
 import Navbar from './navbar';
 import ViewContainer from './viewContainer/viewContainer';
 import { fullScreen } from '../css';
+import { ThemeContext, ThemePalette } from '../contexts/themeContext';
 
 interface Props {}
 
@@ -14,19 +15,21 @@ export default class Layout extends Component<Props, State> {
 
     render() {
         return (
-            <div style={{ ...columnFlex, ...fullScreen, ...background }}>
-                <Navbar/>
-                <ViewContainer/>
-            </div>
+            <ThemeContext.Consumer>
+                {({ theme }) => (
+                <div style={{ ...rootStyle(theme), ...fullScreen}}>
+                    <Navbar/>
+                    <ViewContainer/>
+                </div>
+                )}
+            </ThemeContext.Consumer>
         );
     }
 }
 
-const columnFlex: CSSProperties = {
+const rootStyle = (theme: ThemePalette): CSSProperties => ({
     display: 'flex',
     flexDirection: 'column',
-};
+    background: theme.background.secondary
+});
 
-const background: CSSProperties = {
-    background: '#1f1f1f'
-}

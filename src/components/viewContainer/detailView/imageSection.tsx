@@ -2,6 +2,7 @@ import React, { CSSProperties, Component } from 'react';
 import Axios, { AxiosResponse } from 'axios';
 
 import Spinner from '../../spinner';
+import { ThemeContext, ThemePalette } from '../../../contexts/themeContext';
 
 interface Props {
     view: string
@@ -46,24 +47,28 @@ export default class ImageSection extends Component<Props, State> {
 
     render() {
         return (
-            <div style={root}>
-                {this.state.images.map((src, index) =>
-                    <div key={index} style={imageContainer}>
-                        {src ? <img src={src} style={image}/> : <Spinner/>}
+            <ThemeContext.Consumer>
+                {({ theme }) => (
+                    <div style={root(theme)}>
+                        {this.state.images.map((src, index) =>
+                            <div key={index} style={imageContainer}>
+                                {src ? <img src={src} style={image}/> : <Spinner/>}
+                            </div>
+                        )}
                     </div>
                 )}
-            </div>
+            </ThemeContext.Consumer>
         )
     }
 }
 
-const root: CSSProperties = {
+const root = (theme: ThemePalette): CSSProperties => ({
     margin: '3em -1em -1em -1em',
     display: 'flex',
     flexWrap: 'wrap',
-    background: 'rgba(0, 0, 0, 0.7)',
-    boxShadow: '0 0px 80px 15px black'
-}
+    background: `${theme.background.primary}B3`,
+    boxShadow: `0 0px 80px 15px ${theme.background.primary}B3`
+})
 
 const imageContainer: CSSProperties = {
     margin: '1em',

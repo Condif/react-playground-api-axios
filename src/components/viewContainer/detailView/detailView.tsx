@@ -5,6 +5,8 @@ import Modal from '../../modal';
 import HeaderSection from './headerSection';
 import TextSection from './textSection';
 import ImageSection from './imageSection';
+import { ThemeContext, ThemePalette } from '../../../contexts/themeContext';
+import Button from '../../button';
 
 interface Props extends RouteComponentProps {
     id: string
@@ -33,26 +35,30 @@ export default class DetailView extends Component<Props, State> {
 
     render() {
         return (
-            <div style={container}>
-                <img src={this.imageSrc} style={{ ...fullscreenAbsolute }}/>
-                <div style={{ ...content, ...fullscreenAbsolute }}>
-                    
-                    <div style={flexContainer}>
-                        <HeaderSection view={this.view} openModal={this.openModal}/>
-                        <TextSection view={this.view}/>
-                        <ImageSection view={this.view}/>
-                    </div>
+            <ThemeContext.Consumer>
+                {({ theme }) => (
+                    <div style={container}>
+                        <img src={this.imageSrc} style={{ ...fullscreenAbsolute }}/>
+                        <div style={{ ...content(theme), ...fullscreenAbsolute }}>
+                            
+                            <div style={flexContainer}>
+                                <HeaderSection view={this.view} openModal={this.openModal}/>
+                                <TextSection view={this.view}/>
+                                <ImageSection view={this.view}/>
+                            </div>
 
-                </div>
-                {
-                    this.state.isModalOpen ? (
-                        <Modal persistent shouldClose={this.closeModal}>
-                            <h3>Modal opened from <span style={highlighted}>{this.view}</span> view</h3>
-                            <button onClick={this.closeModal}>Close modal</button>
-                        </Modal>
-                    ) : null
-                }
-            </div>
+                        </div>
+                        {
+                            this.state.isModalOpen ? (
+                                <Modal persistent shouldClose={this.closeModal}>
+                                    <h3>Modal opened from <span style={highlighted}>{this.view}</span> view</h3>
+                                    <Button onClick={this.closeModal}>Close modal</Button>
+                                </Modal>
+                            ) : null
+                        }
+                    </div>
+                )}
+            </ThemeContext.Consumer>
         );
     }
 }
@@ -61,11 +67,12 @@ const highlighted: CSSProperties = {
     color: 'orange'
 }
 
-const content: CSSProperties = {
-    zIndex: 10,
-    background: 'rgba(0, 0, 0, 0.7)',
-    overflowY: 'auto'
-}
+const content = (theme: ThemePalette): CSSProperties => ({
+        zIndex: 10,
+        background: `${theme.background.primary}B3`,
+        overflowY: 'auto'
+    });
+    
     
 const container: CSSProperties = {
     position: 'relative',

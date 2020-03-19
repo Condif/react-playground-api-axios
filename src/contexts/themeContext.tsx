@@ -48,7 +48,7 @@ const themes: Themes = {
 
 export const ThemeContext = React.createContext<State>({
     theme: themes.dark,
-    toggleTheme: () => { }
+    toggleTheme: () => {}
 })
 
 
